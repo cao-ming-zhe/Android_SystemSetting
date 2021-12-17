@@ -3,9 +3,12 @@ package com.example.systemsetting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,19 @@ public class MainActivity extends AppCompatActivity {
     static String TAG = "MainActivity";
     int time = 0;
     int brightness = 0;
+
+    private final SettingObserver mObserver = new SettingObserver();
+
+    private final class SettingObserver extends ContentObserver {
+        public SettingObserver() {
+            super(new Handler(Looper.getMainLooper()));
+        }
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            Log.d(TAG, "uri:" + uri);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+        registerOB();
 
         Button btn = (Button) this.findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -58,5 +75,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public  void registerOB() {
+        getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), false,
+                mObserver);
+        getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.SCREEN_OFF_TIMEOUT), false,
+                mObserver);
+    }
 
+    public  void unRegisterOB() {
+        getContentResolver().unregisterContentObserver(mObserver);
+    }
 }
