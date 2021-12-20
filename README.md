@@ -8,4 +8,4 @@ https://blog.csdn.net/csy288/article/details/8634320
 Android系统APP之SettingsProvider  
 https://blog.csdn.net/myfriend0/article/details/59107989  
 SettingsProvider监听值变化(ContentObserver)  
-http://dongwang0623.cn/2019/12/13/commonframework/settingsprovider-jian-ting-zhi-bian-hua-contentobserver/  
+https://blog.csdn.net/wd229047557/article/details/103526873  
